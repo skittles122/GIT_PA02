@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -14,6 +16,10 @@ public class Player : MonoBehaviour
     private Animator thisAnimator = null;
 
     private float moveSpeed = 0.05f;
+
+    public int Score;
+    public Text ScoreText;
+    public float health;
 
     void Start()
     {
@@ -52,6 +58,23 @@ public class Player : MonoBehaviour
 
         thisController.Move(MoveDirection);
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, -1.5f, 1.5f), transform.position.y, transform.position.z);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+
+        if (other.gameObject.tag == "Obstacle")
+        {
+            health -= 1;
+            if (health <= 0)
+            {
+                SceneManager.LoadScene(1);
+            }
+        }
+        if (other.gameObject.tag == "Score")
+        {
+            Score += 1;
+            ScoreText.text = "SCORE : " + Score;
+        }
     }
 
 }
